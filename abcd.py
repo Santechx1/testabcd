@@ -8,17 +8,15 @@ def send_request(url):
     """
     print(f"Attempting to connect to: {url}\n")
     
+    # This 'try...except' block is updated based on your request
     try:
         # 1. Start timer
         start_time = time.time()
         
         # 2. Send the request. 
-        #    requests.get() handles all the complexity:
-        #    - DNS lookup
-        #    - TCP connection (not UDP)
-        #    - SSL/TLS handshake for HTTPS
-        #    - Sending the HTTP headers
-        response = requests.get(url, timeout=5) # 5-second timeout
+        #    As per your comment "(infinity)", I've set timeout=None
+        #    which means the request will wait forever and never time out.
+        response = requests.get(url, timeout=None) 
         
         # 3. Calculate elapsed time
         elapsed_time = time.time() - start_time
@@ -39,9 +37,6 @@ def send_request(url):
         print("Failed: A connection error occurred.")
         print("Error details (e.g., DNS failure, connection refused):")
         print(e)
-    except requests.exceptions.Timeout:
-        print("--- Connection Result ---")
-        print("Failed: The request timed out (took longer than 5 seconds).")
     except requests.exceptions.RequestException as e:
         # A catch-all for any other 'requests' library error
         print("--- Connection Result ---")
